@@ -1,16 +1,20 @@
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
+var path = require('path');
+var port = process.env.PORT || 8080;
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/client.html');
+    res.sendFile(path.join(__dirname + '/public/client.html'));
 });
 
 const gh_list = {}
 
 io.on('connection', function (socket) {
 
+    /*
     console.log(socket.id + " is connected.");
+    */
 
     setInterval(() => {
 
@@ -25,12 +29,12 @@ io.on('connection', function (socket) {
         id = gh_id;
     });
 
+    /*
     socket.on('disconnect', () => {
         console.log(socket.id + " is disconnected.");
     });
+    */
 });
 
-http.listen(8080, () => {
-    console.log('listening on 8080');
-});
+http.listen(port);
 
