@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SERA</title>
+
+    <style>
+        .ghlist { /* greenhouse list class */
+            border-style: solid;
+            border-color: white;
+        }
+
+        a { /* greenhouse item class */
+            height: 50px;
+            font-size: 25px;
+            background-color: #eee; /* Grey background color */
+            color: black; /* Black text color */
+            display: block; /* Make the links appear below each other */
+            margin:10px;
+            padding: 10px;
+            text-decoration: none; /* Remove underline from links */
+        }
+    </style>
+</head>
+
+<body class="ghlist" style="background-color: black;">
+
+    <div id="gh-list">
+
+        <h1 style="color: white; text-align: center;">SERALAR</h1>
+
+
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+
+        const list = document.getElementById('gh-list');
+        
+        const newItem = (id,temp) => {
+
+            const item = document.createElement('a');
+            item.innerText = 'SERA_ID: ' + id + ' Sıcaklık: ' + temp;
+            item.id = id;
+            return item;
+        };
+        
+        const socket = io();
+
+        socket.on('connect', () => {
+            //list.appendChild(newItem(0,25));
+        });
+
+        socket.on('gh_info',(gh_id,temp) => {
+            gh = document.getElementById(gh_id);
+
+            if(!gh)
+                list.appendChild(newItem(gh_id,temp));
+            else
+                gh.innerText = 'SERA_ID: ' + gh_id + ' Sıcaklık: ' + temp;
+        });
+        
+        socket.on('gh_disconnect',(gh_id) => { // if disconnected, make it offline
+            gh = document.getElementById(gh_id);
+            gh.innerText = 'SERA_ID: ' + gh_id + ' OFFLINE ';
+        });
+
+    </script>
+</body>
+</html>
+
+
+
