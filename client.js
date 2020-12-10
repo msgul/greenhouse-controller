@@ -7,11 +7,12 @@ const url = "https://seralar.herokuapp.com"
 const socket = io(url,{});
 
 const update = () => {
-    var id = 5;
-    var temp = 100;
-
+    var id = 0;
+    var temp = 25;
+    
     setInterval(() => {
-        socket.emit('gh_info',id,temp++);
+        temp += 1-(2*Math.round(Math.random()));
+        socket.emit('gh_info',id,temp);
       }, 3000);
 }
 
